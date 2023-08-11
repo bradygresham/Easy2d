@@ -23,7 +23,10 @@ class Game{
     void game_loop();
     void copyTexturetoRenderer(SDL_Texture* Texture);
     
+<<<<<<< HEAD
  
+=======
+>>>>>>> f15be9e (Function overload with init_systems for greater usability)
 
     
     
@@ -38,4 +41,8 @@ class Game{
 
 
     
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> f15be9e (Function overload with init_systems for greater usability)
