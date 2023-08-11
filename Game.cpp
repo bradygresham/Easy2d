@@ -67,35 +67,6 @@ void Game::copyTexturetoRenderer(SDL_Texture* Texture) //create dedicated textur
         error("Failure to render!");
     }
 }
-/*
-void Game::shootAnimation(Player &player)
-{
-
-    SDL_Rect playerRect = {player.get_x_coord(), player.get_y_coord(), 100, 100};
-    SDL_Delay(1500);
-    //get player texture
-    //make sure the for loop is only as long as the size of the array
-    for (int i = 0; i < 6; i++)
-    {
-        player.setTextureID(i);
-        _texture = IMG_LoadTexture(_renderer, player.getFilePath());
-        if (SDL_RenderCopyEx(_renderer, _texture, NULL, &playerRect, 0.0f, NULL, player.getFlip()) < 0)
-        {
-            error("Failure to render!");
-        }
-        SDL_RenderPresent(_renderer);
-        SDL_RenderClear(_renderer);
-        renderBackground();
-        SDL_Delay(100);
-    }
-    SDL_RenderClear(_renderer);
-    player.setTextureID(0);
-    renderBackground();
-    _texture = IMG_LoadTexture(_renderer, player.getFilePath());
-    SDL_RenderCopyEx(_renderer, _texture, NULL, &playerRect, 0.0f, NULL, player.getFlip());
-    SDL_RenderPresent(_renderer);
-    
-}*/
 
 
 void error(std::string error_message)
