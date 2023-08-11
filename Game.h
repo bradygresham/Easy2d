@@ -23,8 +23,7 @@ class Game{
     void game_loop();
     void copyTexturetoRenderer(SDL_Texture* Texture);
     
-    //delete this later
-    //void shootAnimation(Player &player); 
+ 
 
     
     
