@@ -38,6 +38,16 @@ void Game::init_systems()
 
 }
 
+void Game::init_systems(SDL_Window* Window, SDL_Renderer* Renderer, const char* title, int x, int y, int w, int h, Uint32 window_flags,  int index, Uint32 rendererFlags)
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
+    Window = SDL_CreateWindow(title, x, y, w, h, window_flags);
+    if (Window == nullptr){error("Window not created");}
+    Renderer = SDL_CreateRenderer(Window, index, rendererFlags); //no need for accelerated rendering
+    if (Renderer == nullptr){error("Renderer not created");}
+
+}
+
 void Game::process_input()
 {
     SDL_Event e;

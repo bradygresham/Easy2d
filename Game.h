@@ -19,14 +19,11 @@ class Game{
     
     private:
     void init_systems();
+    void init_systems(SDL_Window* Window, SDL_Renderer* Renderer, const char* title, int x, int y, int w, int h, Uint32 window_flags,  int index, Uint32 rendererFlags);
     void process_input();
     void game_loop();
     void copyTexturetoRenderer(SDL_Texture* Texture);
     
-<<<<<<< HEAD
- 
-=======
->>>>>>> f15be9e (Function overload with init_systems for greater usability)
 
     
     
@@ -41,8 +38,4 @@ class Game{
 
 
     
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> f15be9e (Function overload with init_systems for greater usability)
