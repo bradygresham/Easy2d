@@ -4,7 +4,7 @@
 class Sprite{
     public:
     Sprite();
-    Sprite(Player player);
+    
     ~Sprite();
 
     int getX();
