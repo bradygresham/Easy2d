@@ -6,6 +6,10 @@
 #include <string>
 
 class textureManager{
+
+    textureManager();
+    //textureManager(const char* textureList[]);
+    ~textureManager();
     
     static std::map<const char*, SDL_Texture*> textureMap;
 

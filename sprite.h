@@ -4,7 +4,6 @@
 class Sprite{
     public:
     Sprite();
-    
     ~Sprite();
 
     int getX();
