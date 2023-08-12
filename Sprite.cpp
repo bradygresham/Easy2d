@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "Sprite.h"
 Sprite::Sprite():
 _xCoord(0),
 _yCoord(0),
