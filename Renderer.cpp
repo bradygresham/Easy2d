@@ -13,7 +13,7 @@ Renderer::~Renderer()
 
 void Renderer::init_renderer()
 {
-    _renderer = SDL_CreateRenderer(NULL, -1, SDL_RENDERER_PRESENTVSYNC);  //need to make rendererclass
+    _renderer = SDL_CreateRenderer(NULL, -1, 0);  //need to make rendererclass
     if (_renderer == nullptr){error("Renderer not created");}
 }
 

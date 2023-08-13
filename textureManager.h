@@ -6,14 +6,15 @@
 #include <string>
 
 class textureManager{
+    public:
 
-    textureManager();
-    //textureManager(const char* textureList[]);
-    ~textureManager();
-    
+    static SDL_Texture* getTextureFromCache(const char* filePath); //searches the map for the texture
+
+    static SDL_Texture* addTexturetoCache(const char* filePath);
+
+    static void destroyCache(); //cleanup at the end of program
+
+    private:
     static std::map<const char*, SDL_Texture*> textureMap;
-
-    static SDL_Texture* getTexture(const char* filePath); //searches the map for the texture
-
 
 };

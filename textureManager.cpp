@@ -1,11 +1,36 @@
 #include "textureManager.h"
+#include "Error.h"
 
-textureManager::textureManager()
+SDL_Texture *textureManager::getTextureFromCache(const char *filePath)
 {
+    //use filePath as key to search for texture
+    auto mit = textureMap.find(filePath); 
+    //include error checking so we don't set computer on fire
+    if (mit == textureMap.end())
+    {
+        addTexturetoCache(filePath); //also returns the new texture if it was made.
+    }
+    //if returns nullptr then we add the filePath to the map with the image stored as the texture
+    return mit->second;
+}
+
+SDL_Texture *textureManager::addTexturetoCache(const char* filePath)
+{
+    SDL_Texture* newTexture = IMG_LoadTexture(nullptr, filePath);
+    if (newTexture == NULL)
+    {
+        SDL_DestroyTexture(newTexture);
+        errorAndFilePath("Error in textureManager.cpp \n Texture not created:", filePath);
+        return NULL;
+    }
+    
+    textureMap.insert(std::make_pair(filePath, newTexture));
+    return newTexture;
+    
 
 }
 
-textureManager::~textureManager()
+void textureManager::destroyCache()
 {
     std::map<const char*, SDL_Texture*>::iterator mit;
     
@@ -14,23 +39,3 @@ textureManager::~textureManager()
         SDL_DestroyTexture(mit->second); 
     }
 }
-
-SDL_Texture *textureManager::getTexture(const char *filePath)
-{
-    //use filePath as key to search for texture
-    auto mit = textureMap.find(filePath); 
-    //include error checking so we don't set computer on fire
-    if (mit == textureMap.end())
-    {
-        SDL_Texture* newTexture = IMG_LoadTexture(nullptr, filePath);
-        if (newTexture == nullptr){
-            SDL_DestroyTexture(newTexture);
-            return nullptr;
-        }
-        textureMap.insert(std::make_pair(filePath, newTexture));
-        return newTexture;
-    }
-    //if returns nullptr then we add the filePath to the map with the image stored as the texture
-    return mit->second;
-}
-

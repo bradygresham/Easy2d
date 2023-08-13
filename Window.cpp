@@ -20,7 +20,7 @@ void Window::init_window()
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0){error("Fatal Error: Cannot initialize SDL Video");}
 
     }
-    _window = SDL_CreateWindow("NAME NOT INITIALIZED", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _windowWidth, _windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow("TITLE NOT INITIALIZED", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _windowWidth, _windowHeight, SDL_WINDOW_SHOWN);
     if (_window == nullptr){error("Window not created");}
 }
 
