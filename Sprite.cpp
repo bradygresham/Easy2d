@@ -1,4 +1,5 @@
 #include "Sprite.h"
+
 Sprite::Sprite():
 _xCoord(0),
 _yCoord(0),
@@ -10,9 +11,6 @@ _destinationRect{_xCoord, _yCoord, _width, _height} //implement this in all clas
     
 }
 
-Sprite::Sprite()
-{
-}
 
 Sprite::~Sprite()
 {
