@@ -17,11 +17,11 @@ SDL_Texture *textureManager::getTextureFromCache(const char *filePath)
 SDL_Texture *textureManager::addTexturetoCache(const char* filePath)
 {
     SDL_Texture* newTexture = IMG_LoadTexture(nullptr, filePath);
-    if (newTexture == NULL)
+    if (newTexture == NULL) //error checking
     {
         SDL_DestroyTexture(newTexture);
         errorAndFilePath("Error in textureManager.cpp \n Texture not created:", filePath);
-        return NULL;
+        return NULL; 
     }
     
     textureMap.insert(std::make_pair(filePath, newTexture));
