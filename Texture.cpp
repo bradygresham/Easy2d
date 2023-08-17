@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "textureManager.h"
+#include "ResourceManager.h"
 #include "Error.h"
 Texture::Texture()
 {
@@ -13,7 +13,7 @@ Texture::~Texture()
 
 void Texture::setTexture(const char * filePath)
 {
-    _texture = textureManager::getTextureFromCache(filePath);
+    _texture = ResourceManager::getTextureFromCache(filePath);
     if (_texture == NULL)
     {
         errorAndFilePath("Error from Texture.cpp \n Texture not initialized:", filePath);
