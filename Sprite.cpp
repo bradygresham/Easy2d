@@ -11,7 +11,6 @@ _destinationRect{_xCoord, _yCoord, _width, _height} //implement this in all clas
     
 }
 
-
 Sprite::~Sprite()
 {
 }
@@ -48,7 +47,7 @@ SDL_Rect Sprite::getDestination()
 
 void Sprite::setDestination()
 {
-    _destinationRect.x = _xCoord;
+    _destinationRect.x = _xCoord; //where it's being drawn to
     _destinationRect.y = _yCoord;
     _destinationRect.w = _width;
     _destinationRect.h = _height;
