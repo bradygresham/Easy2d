@@ -16,7 +16,7 @@ void Texture::setTexture(const char * filePath)
     _texture = ResourceManager::getTextureFromCache(filePath);
     if (_texture == NULL)
     {
-        errorAndFilePath("Error from Texture.cpp \n Texture not initialized:", filePath);
+        errorAndFilePath("Error from Texture.cpp \nTexture not initialized:", filePath);
     }
 }
 
