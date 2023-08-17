@@ -6,3 +6,8 @@ SDL_Texture* ResourceManager::getTextureFromCache(const char* filePath)
 {
     return _textureCache.getTextureFromCache(filePath);
 }
+
+void ResourceManager::destroyCache()
+{
+    _textureCache.destroyCache();
+}

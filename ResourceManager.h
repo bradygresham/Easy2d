@@ -5,6 +5,7 @@ class ResourceManager
 {
     public:
     static SDL_Texture* getTextureFromCache(const char* filePath); 
+    static void destroyCache();
     private:
     static textureManager _textureCache;
 };
