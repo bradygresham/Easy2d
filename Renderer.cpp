@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Error.h"
 #include <SDL2/SDL_image.h>
+#include <iostream>
 Renderer::Renderer()
 {
     _renderer = nullptr;
@@ -30,9 +31,10 @@ SDL_Renderer *Renderer::getRenderer()
 
 void Renderer::copyTexturetoRenderer(SDL_Texture *Texture)
 {
+    SDL_ClearError();
     if (SDL_RenderCopy(_renderer, Texture, NULL, NULL) < 0)
     {
-        error("Failure to render!");
+        std::cout << "\n\n" << SDL_GetError() << "\n";
     }
 }
 

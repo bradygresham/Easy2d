@@ -20,7 +20,7 @@ void Texture::setTexture(SDL_Renderer* renderer, const char * filePath)
     //_texture = ResourceManager::getTextureFromCache(renderer, filePath);
     if (_texture == NULL)
     {
-        errorAndFilePath("Error from Texture.cpp \nTexture not initialized:", filePath);
+        //errorAndFilePath("Error from Texture.cpp \nTexture not initialized:", filePath);
     }
 }
 
