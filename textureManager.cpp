@@ -25,7 +25,7 @@ SDL_Texture *textureManager::getTextureFromCache(SDL_Renderer* renderer, const c
         mit = addTexturetoCache(renderer, filePath); //also returns the new texture if it was made.
     }
     //if returns nullptr then we add the filePath to the map with the image stored as the texture
-    std::cout << "Mit Second right before return in get texture from cache:" << mit -> second;
+    std::cout << "Mit Second right before return in get texture from cache:" << mit->second;
     return mit->second;
 }
 
