@@ -6,7 +6,7 @@ class Texture{
     Texture();
     ~Texture();
 
-    void setTexture(const char* filePath);
+    void setTexture(SDL_Renderer* renderer, const char* filePath);
     SDL_Texture* getTexture();
 
     private:

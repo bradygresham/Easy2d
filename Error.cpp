@@ -8,7 +8,7 @@ void error(std::string message) {
     std::cout << "Press any key to continue...";
     int quit;
     std::cin >> quit;
-    SDL_Quit();
+    
 }
 
 void errorAndFilePath(std::string message, const char* filePath)
@@ -19,5 +19,5 @@ void errorAndFilePath(std::string message, const char* filePath)
     std::cout << "Press any key to continue...";
     int quit;
     std::cin >> quit;
-    SDL_Quit();
+    
 }

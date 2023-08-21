@@ -1,5 +1,7 @@
 #include "textureManager.h"
 #include "Error.h"
+#include <iostream>
+#include <string>
 
 static std::map<const char*, SDL_Texture*> textureMap;
 
@@ -11,33 +13,35 @@ textureManager::~textureManager()
 {
 }
 
-SDL_Texture *textureManager::getTextureFromCache(const char *filePath)
+SDL_Texture *textureManager::getTextureFromCache(SDL_Renderer* renderer, const char *filePath)
 {
     //use filePath as key to search for texture
+    std::cout << "Renderer in getTexturefromcache: " << renderer << "\n FilePath: " << filePath << std::endl;
     auto mit = _textureMap.find(filePath); 
+    //std::cout << "Map Iterator first:" << mit->first << std::endl << "Map Iterator second:" <<mit->second << std::endl;
     //include error checking so we don't set computer on fire
     if (mit == _textureMap.end())
     {
-        addTexturetoCache(filePath); //also returns the new texture if it was made.
+        mit = addTexturetoCache(renderer, filePath); //also returns the new texture if it was made.
     }
     //if returns nullptr then we add the filePath to the map with the image stored as the texture
+    std::cout << "Mit Second right before return in get texture from cache:" << mit -> second;
     return mit->second;
 }
 
-SDL_Texture *textureManager::addTexturetoCache(const char* filePath)
+std::map<const char *, SDL_Texture*>::iterator textureManager::addTexturetoCache(SDL_Renderer* renderer, const char* filePath)
 {
-    SDL_Texture* newTexture = IMG_LoadTexture(nullptr, filePath);
+    SDL_Texture* newTexture = IMG_LoadTexture(renderer, filePath);
+    std::cout << "Renderer in addTexturetocache: " << renderer << "\n FilePath: " << filePath << std::endl;
     if (newTexture == NULL) //error checking
     {
-        SDL_DestroyTexture(newTexture);
         errorAndFilePath("Error in textureManager.cpp \n Texture not created:", filePath);
-        return NULL; 
+        error(SDL_GetError());
+        return _textureMap.end(); 
     }
-    
-    _textureMap.insert(std::make_pair(filePath, newTexture));
-    return newTexture;
-    
-
+    auto result = _textureMap.insert(std::make_pair(filePath, newTexture));
+    std::cout << "New texture data:" << newTexture << std::endl;
+    return result.first;
 }
 
 void textureManager::destroyCache()

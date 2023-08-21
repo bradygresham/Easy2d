@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "ResourceManager.h"
 #include "Error.h"
+#include <iostream>
 Texture::Texture()
 {
     _texture = NULL;
@@ -11,9 +12,12 @@ Texture::~Texture()
     SDL_DestroyTexture(_texture);
 }
 
-void Texture::setTexture(const char * filePath)
+void Texture::setTexture(SDL_Renderer* renderer, const char * filePath)
 {
-    _texture = ResourceManager::getTextureFromCache(filePath);
+    std::cout << "Renderer in Texture: " << renderer << "\n FilePath: " << filePath << std::endl;
+    SDL_SetRenderTarget(renderer, _texture);
+    SDL_RenderCopy(renderer, ResourceManager::getTextureFromCache(renderer, filePath), NULL, NULL);
+    //_texture = ResourceManager::getTextureFromCache(renderer, filePath);
     if (_texture == NULL)
     {
         errorAndFilePath("Error from Texture.cpp \nTexture not initialized:", filePath);
