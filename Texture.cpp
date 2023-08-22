@@ -14,7 +14,6 @@ Texture::~Texture()
 
 void Texture::setTexture(SDL_Renderer* renderer, const char * filePath)
 {
-    std::cout << "Renderer in Texture: " << renderer << "\n FilePath: " << filePath << std::endl;
     SDL_SetRenderTarget(renderer, _texture);
     SDL_RenderCopy(renderer, ResourceManager::getTextureFromCache(renderer, filePath), NULL, NULL);
     //_texture = ResourceManager::getTextureFromCache(renderer, filePath);
