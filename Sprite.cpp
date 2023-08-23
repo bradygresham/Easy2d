@@ -15,36 +15,6 @@ Sprite::~Sprite()
 {
 }
 
-int Sprite::getX()
-{
-    return _xCoord;
-}
-
-int Sprite::getY()
-{
-    return _yCoord;
-}
-
-int Sprite::getW()
-{
-    return _width;
-}
-
-int Sprite::getH()
-{
-    return _height;
-}
-
-SDL_Rect Sprite::getSource()
-{
-    return _sourceRect;
-}
-
-SDL_Rect Sprite::getDestination()
-{
-    return _destinationRect;
-}
-
 void Sprite::setDestination()
 {
     _destinationRect.x = _xCoord; //where it's being drawn to
@@ -53,10 +23,6 @@ void Sprite::setDestination()
     _destinationRect.h = _height;
 }
 
-SDL_RendererFlip Sprite::getFlip()
-{
-    return _flip;
-}
 
 SDL_Texture *Sprite::getTexture()
 {
