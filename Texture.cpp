@@ -12,14 +12,16 @@ Texture::~Texture()
     SDL_DestroyTexture(_texture);
 }
 
+
+
+
+//this function is not working properly
 void Texture::setTexture(SDL_Renderer* renderer, const char * filePath)
 {
-    SDL_SetRenderTarget(renderer, _texture);
-    SDL_RenderCopy(renderer, ResourceManager::getTextureFromCache(renderer, filePath), NULL, NULL);
-    //_texture = ResourceManager::getTextureFromCache(renderer, filePath);
+    _texture = ResourceManager::getTextureFromCache(renderer, filePath);
     if (_texture == NULL)
     {
-        //errorAndFilePath("Error from Texture.cpp \nTexture not initialized:", filePath);
+        std::cout << "\n\nERROR:" << SDL_GetError();
     }
 }
 

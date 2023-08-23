@@ -35,6 +35,8 @@ void Renderer::copyTexturetoRenderer(SDL_Texture *Texture)
     if (SDL_RenderCopy(_renderer, Texture, NULL, NULL) < 0)
     {
         std::cout << "\n\n" << SDL_GetError() << "\n";
+        std::cout << "Renderer address in renderer class: " << &_renderer 
+        << "\nTexture address in renderer class: " << &Texture << std::endl; 
     }
 }
 

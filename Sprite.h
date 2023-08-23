@@ -6,17 +6,19 @@ class Sprite{
     Sprite();
     ~Sprite();
 
-    int getX();
-    int getY();
-    int getW();
-    int getH();
+    int getX() {return _xCoord;}
+    int getY() {return _yCoord;}
+    int getW() {return _width;}
+    int getH() {return _height;}
 
-    SDL_Rect getSource();
-    SDL_Rect getDestination();
-    void setDestination();
-    SDL_RendererFlip getFlip();
+    SDL_Rect getSource() {return _sourceRect;}
+    SDL_Rect getDestination() {return _destinationRect;}
+    
+    SDL_RendererFlip getFlip() {return _flip;}
+
     SDL_Texture* getTexture();
     void setTexture(); //possibly needs to use the texture manager
+    void setDestination();
 
     private:
     int _xCoord;
@@ -29,6 +31,6 @@ class Sprite{
     //
 
     SDL_RendererFlip _flip;
-    SDL_Texture* _texture;
+    SDL_Texture* _texture; //make this our own texture class
 
 };
