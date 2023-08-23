@@ -1,2 +1,0 @@
-/usr/bin/ar qc libEasy2d.a CMakeFiles/Easy2d.dir/Error.cpp.o CMakeFiles/Easy2d.dir/Renderer.cpp.o CMakeFiles/Easy2d.dir/Sprite.cpp.o CMakeFiles/Easy2d.dir/Texture.cpp.o CMakeFiles/Easy2d.dir/textureManager.cpp.o CMakeFiles/Easy2d.dir/Window.cpp.o
-/usr/bin/ranlib libEasy2d.a

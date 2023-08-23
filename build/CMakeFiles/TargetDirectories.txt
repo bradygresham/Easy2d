@@ -1,3 +1,0 @@
-/home/brady/Desktop/code/cpp/Easy2d/build/CMakeFiles/Easy2d.dir
-/home/brady/Desktop/code/cpp/Easy2d/build/CMakeFiles/edit_cache.dir
-/home/brady/Desktop/code/cpp/Easy2d/build/CMakeFiles/rebuild_cache.dir
