@@ -8,6 +8,8 @@ class Window{
     void init_window(const char* title, int x, int y, int w, int h, Uint32 window_flags);
 
     SDL_Window* getWindow();
+    int get_width(){return _windowWidth;}
+    int get_height(){return _windowHeight;}
     
     private:
     SDL_Window* _window;
