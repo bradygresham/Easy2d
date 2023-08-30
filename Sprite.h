@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "Texture.h"
 class Sprite{
     public:
     Sprite();
@@ -17,7 +18,7 @@ class Sprite{
     SDL_RendererFlip getFlip() {return _flip;}
 
     SDL_Texture* getTexture();
-    void setTexture(); //possibly needs to use the texture manager
+    void setTexture(SDL_Renderer * renderer, const char* filePath); 
     void setDestination();
 
     private:
@@ -31,6 +32,6 @@ class Sprite{
     //
 
     SDL_RendererFlip _flip;
-    SDL_Texture* _texture; //make this our own texture class
+    Texture _texture;
 
 };

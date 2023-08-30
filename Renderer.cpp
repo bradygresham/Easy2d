@@ -14,13 +14,13 @@ Renderer::~Renderer()
 
 void Renderer::init_renderer()
 {
-    _renderer = SDL_CreateRenderer(NULL, -1, 0);  //need to make rendererclass
+    _renderer = SDL_CreateRenderer(NULL, -1, 0);
     if (_renderer == nullptr){error("Renderer not created");}
 }
 
 void Renderer::init_renderer(SDL_Window *targetWindow, Uint32 rendererFlags)
 {
-    _renderer = SDL_CreateRenderer(targetWindow, -1, rendererFlags);  //need to make rendererclass
+    _renderer = SDL_CreateRenderer(targetWindow, -1, rendererFlags);
     if (_renderer == nullptr){error("Renderer not created");}
 }
 
@@ -34,21 +34,12 @@ void Renderer::copyTexturetoRenderer(SDL_Texture *Texture)
     SDL_ClearError();
     if (SDL_RenderCopy(_renderer, Texture, NULL, NULL) < 0)
     {
-        std::cout << "\n\n" << SDL_GetError() << "\n";
-        std::cout << "Renderer address in renderer class: " << &_renderer 
-        << "\nTexture address in renderer class: " << &Texture << std::endl; 
+        error("Failure to render!");
     }
 }
 
 void Renderer::copyTexturetoRenderer(SDL_Texture *Texture, const SDL_Rect srcrect, const SDL_Rect dstrect, const double angle, const SDL_RendererFlip flip) // create dedicated texture class later
 {
-    /*SDL_RenderCopyEx(SDL_Renderer * renderer,
-                   SDL_Texture * texture,
-                   const SDL_Rect * srcrect,
-                   const SDL_Rect * dstrect,
-                   const double angle,
-                   const SDL_Point *center,
-                   const SDL_RendererFlip flip);*/
     if (SDL_RenderCopyEx(_renderer, Texture, &srcrect, &dstrect, angle, NULL, flip) < 0)
     {
         error("Failure to render!");

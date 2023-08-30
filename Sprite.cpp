@@ -6,9 +6,9 @@ _yCoord(0),
 _width(0),
 _height(0),
 _sourceRect{_xCoord, _yCoord, _width, _height},
-_destinationRect{_xCoord, _yCoord, _width, _height} //implement this in all classes later on
+_destinationRect{_xCoord, _yCoord, _width, _height}
+//init the texture here too
 {
-    
 }
 
 Sprite::~Sprite()
@@ -26,10 +26,10 @@ void Sprite::setDestination()
 
 SDL_Texture *Sprite::getTexture()
 {
-    return _texture;
+    return _texture.getTexture();
 }
 
-void Sprite::setTexture()
+void Sprite::setTexture(SDL_Renderer * renderer, const char* filePath)
 {
-    
+    _texture.setTexture(renderer,filePath);
 }

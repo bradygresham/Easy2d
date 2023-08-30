@@ -22,8 +22,6 @@ SDL_Texture *textureManager::getTextureFromCache(SDL_Renderer* renderer, const c
     {
         mit = addTexturetoCache(renderer, filePath); //also returns the new texture if it was made.
     }
-    //if returns nullptr then we add the filePath to the map with the image stored as the texture
-    //std::cout << "Mit Second right before return in get texture from cache:" << mit->second; //make sure it matches to New texture data
     return mit->second;
 }
 
@@ -38,7 +36,6 @@ std::map<const char *, SDL_Texture*>::iterator textureManager::addTexturetoCache
         return _textureMap.end(); 
     }
     auto result = _textureMap.insert(std::make_pair(filePath, newTexture));
-    //std::cout << "New texture data:" << newTexture << std::endl;
     return result.first;
 }
 
