@@ -1,14 +1,15 @@
 #pragma once
 #include <SDL2/SDL.h>
-class Camera{
+class Camera2D{
     public:
-    Camera();
-    Camera(int w, int h);
-    ~Camera();
+    Camera2D();
+    Camera2D(int w, int h);
+    ~Camera2D();
 
     void init_camera(int w, int h);
     void applyCamera(SDL_Renderer * renderer);
     void setZoom(double new_zoom);
+    void setPosition(int x, int y);
     void move(int dx, int dy);
     
     private:

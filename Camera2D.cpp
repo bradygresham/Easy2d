@@ -1,26 +1,26 @@
-#include "Camera.h"
+#include "Camera2D.h"
 
-Camera::Camera()
+Camera2D::Camera2D()
 : _viewport({0, 0, 0, 0}), _zoom(1.0), _x(0), _y(0) {}
 
 
-Camera::Camera(int w, int h)
+Camera2D::Camera2D(int w, int h)
 : _viewport({0, 0, w, h}), _zoom(1.0), _x(0), _y(0) {}
 
-Camera::~Camera(){}
+Camera2D::~Camera2D(){}
 
-void Camera::init_camera(int w, int h)
+void Camera2D::init_camera(int w, int h)
 {
     _viewport.w = w;
     _viewport.h = h;
 }
 
-void Camera::applyCamera(SDL_Renderer *renderer)
+void Camera2D::applyCamera(SDL_Renderer *renderer)
 {
     SDL_RenderSetViewport(renderer, &_viewport);
 }
 
-void Camera::setZoom(double new_zoom)
+void Camera2D::setZoom(double new_zoom)
 {
     _zoom = new_zoom;
     int prevW = _viewport.w;
@@ -35,7 +35,15 @@ void Camera::setZoom(double new_zoom)
     _viewport.y = _y;
 }
 
-void Camera::move(int dx, int dy)
+void Camera2D::setPosition(int x, int y)
+{
+    _x = x;
+    _y = y;
+    _viewport.x = _x;
+    _viewport.y = _y;
+}
+
+void Camera2D::move(int dx, int dy)
 {
     _x += dx;
     _y += dy;

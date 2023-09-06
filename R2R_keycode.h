@@ -3,6 +3,8 @@
 #define SDLK_SCANCODE_MASK (1<<30)
 #define SDL_SCANCODE_TO_KEYCODE(X)  (X | SDLK_SCANCODE_MASK)
 
+//this is a wrapper to the sdl_keycode enum 
+//able to change values/input library if needed
 typedef enum
 {
 
