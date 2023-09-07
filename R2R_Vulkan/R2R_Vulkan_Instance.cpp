@@ -17,6 +17,7 @@ namespace R2R{
 
     Instance::~Instance()
     {
+        vkDestroyInstance(_instance, nullptr);
     }
 
     void Instance::init_instance()
