@@ -2,6 +2,7 @@
 #include "Error.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
+
 Renderer::Renderer()
 {
     _renderer = nullptr;

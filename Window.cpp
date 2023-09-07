@@ -33,8 +33,8 @@ void Window::init_window(const char *title, int x, int y, int w, int h, Uint32 w
 
     }
     _window = SDL_CreateWindow(title, x, y, w, h, window_flags);
+    _windowWidth = w; _windowHeight = h;
     if (_window == nullptr){error("Window not created");}
-    else{_windowWidth = w; _windowHeight = h;}
 }
 
 SDL_Window* Window::getWindow()
