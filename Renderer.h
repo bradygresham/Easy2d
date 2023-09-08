@@ -13,8 +13,8 @@ class Renderer{
 
     void copyTexturetoRenderer(SDL_Texture* Texture);
     void copyTexturetoRenderer(SDL_Texture* Texture, const SDL_Rect srcrect, const SDL_Rect dstrect, const double angle, const SDL_RendererFlip flip);
-    private:
 
+    private:
     SDL_Renderer* _renderer;
 
 

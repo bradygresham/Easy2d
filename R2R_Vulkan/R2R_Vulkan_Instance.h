@@ -1,5 +1,7 @@
 #pragma once
 #include <vulkan/vulkan.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 namespace R2R{
 
 class Instance{
@@ -10,13 +12,15 @@ class Instance{
 
     void init_instance(); //create info as well as app info
     void init_instance(VkInstanceCreateInfo create, VkApplicationInfo app);
-
+    void init_instance(SDL_Window* window);
     VkInstance* getInstancePtr(); //return pointer to the instance
 
     private:
     VkInstance _instance;
     VkInstanceCreateInfo _createInfo;
     VkApplicationInfo _appInfo;
+    const char** _sdlExtensions;
+    unsigned int _sdlExtensionCount;
 };
 
 }

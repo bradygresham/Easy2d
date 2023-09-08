@@ -53,7 +53,8 @@ void Window::init_window(WindowInfo info)
 
     }
     _window = SDL_CreateWindow(info.title, info.x, info.y, info.w, info.h, info.window_flags);
-    _windowWidth = info.w; _windowHeight = info.h;
+    _windowWidth = info.w; 
+    _windowHeight = info.h;
     if (_window == nullptr){error("Window not created");}
 }
 
