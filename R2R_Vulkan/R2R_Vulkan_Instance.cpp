@@ -56,7 +56,10 @@ namespace R2R{
     void Instance::init_instance(SDL_Window* window)
     {
         
-        
+        if (!checkValidationLayerSupport()){
+            error("validation layers requested, but not available!\n");
+            throw std::runtime_error("");
+        }
         if (!SDL_Vulkan_GetInstanceExtensions(window, &_sdlExtensionCount, NULL)){
             error("Could not init vulkan\n");
         }
@@ -86,7 +89,15 @@ namespace R2R{
         _createInfo.pApplicationInfo = &_appInfo;
         _createInfo.enabledExtensionCount = _sdlExtensionCount;
         _createInfo.ppEnabledExtensionNames = _sdlExtensions;
-        _createInfo.enabledLayerCount = 0;
+        //
+        bool enableValidationLayers = true;
+        if (enableValidationLayers) {
+            _createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            _createInfo.ppEnabledLayerNames = validationLayers.data();
+            } 
+        else {
+            _createInfo.enabledLayerCount = 0;
+            }
 
         //
         vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount,nullptr);
@@ -105,10 +116,6 @@ namespace R2R{
         for (uint32_t i = 0; i < _createInfo.enabledExtensionCount; ++i) {
             std::cout << '\t' << _createInfo.ppEnabledExtensionNames[i] << '\n';
         }
-        
-        
-    
-        
 
         //create instance
         if (vkCreateInstance(&_createInfo, nullptr, &_instance) != VK_SUCCESS){
@@ -136,5 +143,26 @@ namespace R2R{
     VkInstance *Instance::getInstancePtr()
     {
         return &_instance;
+    }
+    
+    bool Instance::checkValidationLayerSupport()
+    {
+        uint32_t layerCount;
+    vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+    std::vector<VkLayerProperties> availableLayers(layerCount);
+    vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+    for (const char* layerName : validationLayers) {
+        bool layerFound = false;
+        for (const auto& layerProperties : availableLayers) {
+        if (strcmp(layerName, layerProperties.layerName) == 0) {
+        layerFound = true;
+        break;
+        }
+    }
+    if (!layerFound) {
+        return false;
+    }
+    }
+    return true;
     }
 }
