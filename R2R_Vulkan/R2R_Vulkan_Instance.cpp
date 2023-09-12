@@ -90,13 +90,13 @@ namespace R2R{
 
         //
         vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount,nullptr);
-        std::vector<VkExtensionProperties> extensions(_sdlExtensionCount);
-        vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount, extensions.data());
+        std::vector<VkExtensionProperties> available_extensions(_sdlExtensionCount);
+        vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount, available_extensions.data());
         //
         
         std::cout << "available extensions:\n";
         
-        for (const auto& extension : extensions) {
+        for (const auto& extension : available_extensions) {
             std::cout << '\t' << extension.extensionName << '\n';
             
         }
