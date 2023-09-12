@@ -71,7 +71,8 @@ namespace R2R{
         }
 
         //default initialization
-
+        //check that it worked
+        
         //app info
         _appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         _appInfo.pApplicationName = "R2R_Vulkan App: Application name not initialized";
@@ -87,14 +88,27 @@ namespace R2R{
         _createInfo.ppEnabledExtensionNames = _sdlExtensions;
         _createInfo.enabledLayerCount = 0;
 
-        //check that it worked
+        //
         vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount,nullptr);
         std::vector<VkExtensionProperties> extensions(_sdlExtensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount, extensions.data());
+        //
+        
         std::cout << "available extensions:\n";
+        
         for (const auto& extension : extensions) {
             std::cout << '\t' << extension.extensionName << '\n';
+            
         }
+        std::cout << "\nENABLED_EXTENSIONS: \n";
+        
+        for (uint32_t i = 0; i < _createInfo.enabledExtensionCount; ++i) {
+            std::cout << '\t' << _createInfo.ppEnabledExtensionNames[i] << '\n';
+        }
+        
+        
+    
+        
 
         //create instance
         if (vkCreateInstance(&_createInfo, nullptr, &_instance) != VK_SUCCESS){
