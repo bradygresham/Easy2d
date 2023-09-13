@@ -82,13 +82,13 @@ namespace R2R{
         _appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
         _appInfo.pEngineName = "No Engine";
         _appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        _appInfo.apiVersion = VK_API_VERSION_1_0;
+        _appInfo.apiVersion = VK_API_VERSION_1_1; // version 1.1 needed for VK_KHR_surface_protected_capabilities extension
 
         //create info
         _createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         _createInfo.pApplicationInfo = &_appInfo;
-        _createInfo.enabledExtensionCount = _sdlExtensionCount;
-        _createInfo.ppEnabledExtensionNames = _sdlExtensions;
+        //_createInfo.enabledExtensionCount = _sdlExtensionCount;
+        //_createInfo.ppEnabledExtensionNames = _sdlExtensions;
         //
         bool enableValidationLayers = true;
         if (enableValidationLayers) {
@@ -100,17 +100,28 @@ namespace R2R{
             }
 
         //
-        vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount,nullptr);
+        vkEnumerateInstanceExtensionProperties(NULL, &_sdlExtensionCount,NULL);
         std::vector<VkExtensionProperties> available_extensions(_sdlExtensionCount);
-        vkEnumerateInstanceExtensionProperties(nullptr, &_sdlExtensionCount, available_extensions.data());
+        vkEnumerateInstanceExtensionProperties(NULL, &_sdlExtensionCount, available_extensions.data());
         //
         
         std::cout << "available extensions:\n";
+        //enabling all extensions
+        const char* enable[size(available_extensions)];
         
+        for (int i = 0; i < size(available_extensions); i++){
+            enable[i] = available_extensions[i].extensionName;
+        }
+        //these two lines enable all extensions
+        _createInfo.enabledExtensionCount = size(available_extensions);
+        _createInfo.ppEnabledExtensionNames = enable;
+        //
+        //
         for (const auto& extension : available_extensions) {
             std::cout << '\t' << extension.extensionName << '\n';
             
         }
+        
         std::cout << "\nENABLED_EXTENSIONS: \n";
         
         for (uint32_t i = 0; i < _createInfo.enabledExtensionCount; ++i) {
@@ -132,7 +143,7 @@ namespace R2R{
         //pass in your own vk info
         _createInfo = create;
         _appInfo = app;
-
+        
         //create instance
         if (vkCreateInstance(&_createInfo, nullptr, &_instance) != VK_SUCCESS){
             error("Failure to create instance");

@@ -12,6 +12,7 @@ class Instance{
     Instance (const Instance & inst);
     ~Instance();
 
+    void init_extensions();
     void init_instance(); //create info as well as app info
     void init_instance(VkInstanceCreateInfo create, VkApplicationInfo app);
     void init_instance(SDL_Window* window);

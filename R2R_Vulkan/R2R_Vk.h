@@ -10,6 +10,7 @@ namespace R2R{
         VK(const VK & app);
         ~VK();
 
+        
         void VK_init_systems();
         //void init_systems()
 
