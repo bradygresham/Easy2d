@@ -1,0 +1,113 @@
+VkResult
+Init04LogicalDeviceAndQueue( )
+{
+	HERE_I_AM( "Init04LogicalDeviceAndQueue" );
+
+	VkResult result = VK_SUCCESS;
+
+	float 	queuePriorities[NUM_QUEUES_WANTED] =
+	{
+		1.
+	};
+
+	VkDeviceQueueCreateInfo			vdqci[NUM_QUEUES_WANTED];
+		vdqci[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+		vdqci[0].pNext = nullptr;
+		vdqci[0].flags = 0;
+		vdqci[0].queueFamilyIndex = FindQueueFamilyThatDoesGraphics( );
+		vdqci[0].queueCount = 1;		// how many queues to create
+		vdqci[0].pQueuePriorities = queuePriorities;	// array of queue priorities [0.,1.]
+
+
+	const char * myDeviceLayers[ ] =
+	{
+		"VK_LAYER_LUNARG_object_tracker",
+		"VK_LAYER_LUNARG_parameter_validation",
+	};
+
+	const char * myDeviceExtensions[ ] =
+	{
+		"VK_KHR_swapchain",
+	};
+
+
+	// see what device layers are available:
+
+	uint32_t layerCount;
+	vkEnumerateDeviceLayerProperties(PhysicalDevice, &layerCount, (VkLayerProperties *)nullptr);
+	VkLayerProperties * deviceLayers = new VkLayerProperties[layerCount];
+	result = vkEnumerateDeviceLayerProperties( PhysicalDevice, &layerCount, deviceLayers);
+	REPORT("vkEnumerateDeviceLayerProperties");
+	if (result != VK_SUCCESS)
+	{
+		return result;
+	}
+
+	fprintf(FpDebug, "\n%d physical device layers enumerated:\n", layerCount);
+	for (unsigned int i = 0; i < layerCount; i++)
+	{
+		fprintf(FpDebug, "0x%08x  %2d  '%s'  '%s'\n",
+			deviceLayers[i].specVersion,
+			deviceLayers[i].implementationVersion,
+			deviceLayers[i].layerName,
+			deviceLayers[i].description);
+
+
+		// see what device extensions are available:
+
+		uint32_t extensionCount;
+		vkEnumerateDeviceExtensionProperties(PhysicalDevice, deviceLayers[i].layerName,
+			IN &extensionCount, (VkExtensionProperties *)nullptr);
+		VkExtensionProperties * deviceExtensions = new VkExtensionProperties[extensionCount];
+		result = vkEnumerateDeviceExtensionProperties(PhysicalDevice, deviceLayers[i].layerName,
+				 &extensionCount, deviceExtensions);
+		REPORT("vkEnumerateDeviceExtensionProperties");
+		if (result != VK_SUCCESS)
+		{
+			return result;
+		}
+
+		fprintf(FpDebug, "\t%d device extensions enumerated for '%s':\n", extensionCount,
+			 deviceLayers[i].layerName );
+		for (unsigned int ii = 0; ii < extensionCount; ii++)
+		{
+			fprintf(FpDebug, "\t0x%08x  '%s'\n",
+				deviceExtensions[ii].specVersion,
+				deviceExtensions[ii].extensionName);
+		}
+		fprintf(FpDebug, "\n");
+	}
+
+	delete[ ] deviceLayers;
+
+
+	VkDeviceCreateInfo   vdci;
+		vdci.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+		vdci.pNext = nullptr;
+		vdci.flags = 0;
+		vdci.queueCreateInfoCount = NUM_QUEUES_WANTED;
+			// # of device queues, each of which can create multiple queues
+		vdci.pQueueCreateInfos = IN &vdqci[0];			// array of VkDeviceQueueCreateInfo's
+
+		vdci.enabledLayerCount = sizeof(myDeviceLayers) / sizeof(char *);
+		//vdci.enabledLayerCount = 0;
+		vdci.ppEnabledLayerNames = myDeviceLayers;
+
+		vdci.enabledExtensionCount = sizeof(myDeviceExtensions) / sizeof(char *);
+		vdci.ppEnabledExtensionNames = myDeviceExtensions;
+
+		vdci.pEnabledFeatures = IN &PhysicalDeviceFeatures;	// already created
+
+	result = vkCreateLogicalDevice( PhysicalDevice, IN &vdci, PALLOCATOR, OUT &LogicalDevice );
+	REPORT( "vkCreateLogicalDevice" );
+
+	
+	// get the queue for this logical device:
+	
+	vkGetDeviceQueue( LogicalDevice, 0, 0,  OUT &Queue );
+				// queueFamilyIndex, queueIndex
+	return result;
+}
+2
+
+

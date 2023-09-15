@@ -12,20 +12,19 @@ class Instance{
     Instance (const Instance & inst);
     ~Instance();
 
-    void init_extensions();
-    void init_instance(); //create info as well as app info
+    
+
+    //instance initializations
+    //*******************
     void init_instance(VkInstanceCreateInfo create, VkApplicationInfo app);
     void init_instance(SDL_Window* window);
+    //*******************
     VkInstance* getInstancePtr(); //return pointer to the instance
 
     bool checkValidationLayerSupport();
 
     private:
     VkInstance _instance;
-    VkInstanceCreateInfo _createInfo;
-    VkApplicationInfo _appInfo;
-    const char** _sdlExtensions;
-    unsigned int _sdlExtensionCount;
 
     const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"

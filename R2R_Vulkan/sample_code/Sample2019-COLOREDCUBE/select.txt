@@ -1,0 +1,237 @@
+VkResult
+Init03PhysicalDeviceAndGetQueueFamilyProperties( )
+{
+	HERE_I_AM( "Init03PhysicalDeviceAndGetQueueFamilyProperties" );
+
+	VkResult result = VK_SUCCESS;
+
+	result = vkEnumeratePhysicalDevices( Instance, OUT &PhysicalDeviceCount, (VkPhysicalDevice *)nullptr ); 
+	REPORT( "vkEnumeratePhysicalDevices - 1" );
+	if( result != VK_SUCCESS || PhysicalDeviceCount <= 0 )
+	{
+		fprintf( FpDebug, "Could not count the physical devices\n" );
+		return VK_SHOULD_EXIT;
+	}
+
+	fprintf(FpDebug, "\n%d physical devices found.\n", PhysicalDeviceCount);
+
+	VkPhysicalDevice * physicalDevices = new VkPhysicalDevice[ PhysicalDeviceCount ];
+	result = vkEnumeratePhysicalDevices( Instance, OUT &PhysicalDeviceCount, OUT physicalDevices  );
+	REPORT( "vkEnumeratePhysicalDevices - 2" );
+	if( result != VK_SUCCESS )
+	{
+		fprintf( FpDebug, "Could not enumerate the %d physical devices\n", PhysicalDeviceCount );
+		return VK_SHOULD_EXIT;
+	}
+
+	int discreteSelect   = -1;
+	int integratedSelect = -1;
+	for( unsigned int i = 0; i < PhysicalDeviceCount; i++ )
+	{
+		VkPhysicalDeviceProperties vpdp;
+		vkGetPhysicalDeviceProperties( IN physicalDevices[i], OUT &vpdp );
+		if( result != VK_SUCCESS )
+		{
+			fprintf( FpDebug, "Could not get the physical device properties of device %d\n", i );
+			return VK_SHOULD_EXIT;
+		}
+
+		fprintf( FpDebug, " \n\nDevice %2d:\n", i );
+		fprintf( FpDebug, "\tAPI version: %d\n", vpdp.apiVersion );
+		fprintf( FpDebug, "\tDriver version: %d\n", vpdp.apiVersion );
+		fprintf( FpDebug, "\tVendor ID: 0x%04x\n", vpdp.vendorID );
+		fprintf( FpDebug, "\tDevice ID: 0x%04x\n", vpdp.deviceID );
+		fprintf( FpDebug, "\tPhysical Device Type: %d =", vpdp.deviceType );
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )	fprintf( FpDebug, " (Discrete GPU)\n" );
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )	fprintf( FpDebug, " (Integrated GPU)\n" );
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU )	fprintf( FpDebug, " (Virtual GPU)\n" );
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_CPU )		fprintf( FpDebug, " (CPU)\n" );
+		fprintf( FpDebug, "\tDevice Name: %s\n", vpdp.deviceName );
+		fprintf( FpDebug, "\tPipeline Cache Size: %d\n", vpdp.pipelineCacheUUID[0] );
+		//fprintf( FpDebug, "?", vpdp.limits );
+		//fprintf( FpDebug, "?", vpdp.sparseProperties );
+
+		// need some logical here to decide which physical device to select:
+
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
+			discreteSelect = i;
+
+		if( vpdp.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )
+			integratedSelect = i;
+	}
+
+	int which = -1;
+	if( discreteSelect >= 0 )
+	{
+		which = discreteSelect;
+		PhysicalDevice = physicalDevices[which];
+	}
+	else if( integratedSelect >= 0 )
+	{
+		which = integratedSelect;
+		PhysicalDevice = physicalDevices[which];
+	}
+	else
+	{
+		fprintf( FpDebug, "Could not select a Physical Device\n" );
+		return VK_SHOULD_EXIT;
+	}
+
+	delete[ ] physicalDevices;
+
+	vkGetPhysicalDeviceProperties( PhysicalDevice, OUT &PhysicalDeviceProperties );
+	fprintf( FpDebug, "Device #%d selected ('%s')\n", which, PhysicalDeviceProperties.deviceName );
+
+	vkGetPhysicalDeviceFeatures( IN PhysicalDevice, OUT &PhysicalDeviceFeatures );
+
+	fprintf( FpDebug, "\nPhysical Device Features:\n");
+	fprintf( FpDebug, "geometryShader = %2d\n", PhysicalDeviceFeatures.geometryShader);
+	fprintf( FpDebug, "tessellationShader = %2d\n", PhysicalDeviceFeatures.tessellationShader );
+	fprintf( FpDebug, "multiDrawIndirect = %2d\n", PhysicalDeviceFeatures.multiDrawIndirect );
+	fprintf( FpDebug, "wideLines = %2d\n", PhysicalDeviceFeatures.wideLines );
+	fprintf( FpDebug, "largePoints = %2d\n", PhysicalDeviceFeatures.largePoints );
+	fprintf( FpDebug, "multiViewport = %2d\n", PhysicalDeviceFeatures.multiViewport );
+	fprintf( FpDebug, "occlusionQueryPrecise = %2d\n", PhysicalDeviceFeatures.occlusionQueryPrecise );
+	fprintf( FpDebug, "pipelineStatisticsQuery = %2d\n", PhysicalDeviceFeatures.pipelineStatisticsQuery );
+	fprintf( FpDebug, "shaderFloat64 = %2d\n", PhysicalDeviceFeatures.shaderFloat64 );
+	fprintf( FpDebug, "shaderInt64 = %2d\n", PhysicalDeviceFeatures.shaderInt64 );
+	fprintf( FpDebug, "shaderInt16 = %2d\n", PhysicalDeviceFeatures.shaderInt16 );
+
+#ifdef COMMENT
+	All of these VkPhysicalDeviceFeatures are VkBool32s:
+robustBufferAccess;
+fullDrawIndexUint32;
+imageCubeArray;
+independentBlend;
+geometryShader;
+tessellationShader;
+sampleRateShading;
+dualSrcBlend;
+logicOp;
+multiDrawIndirect;
+drawIndirectFirstInstance;
+depthClamp;
+depthBiasClamp;
+fillModeNonSolid;
+depthBounds;
+wideLines;
+largePoints;
+alphaToOne;
+multiViewport;
+samplerAnisotropy;
+textureCompressionETC2;
+textureCompressionASTC_LDR;
+textureCompressionBC;
+occlusionQueryPrecise;
+pipelineStatisticsQuery;
+vertexPipelineStoresAndAtomics;
+fragmentStoresAndAtomics;
+shaderTessellationAndGeometryPointSize;
+shaderImageGatherExtended;
+shaderStorageImageExtendedFormats;
+shaderStorageImageMultisample;
+shaderStorageImageReadWithoutFormat;
+shaderStorageImageWriteWithoutFormat;
+shaderUniformBufferArrayDynamicIndexing;
+shaderSampledImageArrayDynamicIndexing;
+shaderStorageBufferArrayDynamicIndexing;
+shaderStorageImageArrayDynamicIndexing;
+shaderClipDistance;
+shaderCullDistance;
+shaderFloat64;
+shaderInt64;
+shaderInt16;
+shaderResourceResidency;
+shaderResourceMinLod;
+sparseBinding;
+sparseResidencyBuffer;
+sparseResidencyImage2D;
+sparseResidencyImage3D;
+sparseResidency2Samples;
+sparseResidency4Samples;
+sparseResidency8Samples;
+sparseResidency16Samples;
+sparseResidencyAliased;
+variableMultisampleRate;
+inheritedQueries;
+#endif
+
+	VkFormatProperties					vfp;
+#ifdef CHOICES
+VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT = 0x00000001,
+VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT = 0x00000002,
+VK_FORMAT_FEATURE_STORAGE_IMAGE_ATOMIC_BIT = 0x00000004,
+VK_FORMAT_FEATURE_UNIFORM_TEXEL_BUFFER_BIT = 0x00000008,
+VK_FORMAT_FEATURE_STORAGE_TEXEL_BUFFER_BIT = 0x00000010,
+VK_FORMAT_FEATURE_STORAGE_TEXEL_BUFFER_ATOMIC_BIT = 0x00000020,
+VK_FORMAT_FEATURE_VERTEX_BUFFER_BIT = 0x00000040,
+VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT = 0x00000080,
+VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BLEND_BIT = 0x00000100,
+VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT = 0x00000200,
+VK_FORMAT_FEATURE_BLIT_SRC_BIT = 0x00000400,
+VK_FORMAT_FEATURE_BLIT_DST_BIT = 0x00000800,
+VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT = 0x00001000,
+VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_IMG = 0x00002000,
+#endif
+
+	fprintf( FpDebug, "\nImage Formats Checked:\n" );
+	vkGetPhysicalDeviceFormatProperties( PhysicalDevice, IN VK_FORMAT_R32G32B32A32_SFLOAT, &vfp );
+	fprintf( FpDebug, "Format VK_FORMAT_R32G32B32A32_SFLOAT: 0x%08x 0x%08x  0x%08x\n",
+				vfp.linearTilingFeatures, vfp.optimalTilingFeatures, vfp.bufferFeatures );
+	vkGetPhysicalDeviceFormatProperties( PhysicalDevice, IN VK_FORMAT_R8G8B8A8_UNORM, &vfp );
+	fprintf( FpDebug, "Format VK_FORMAT_R8G8B8A8_UNORM: 0x%08x 0x%08x  0x%08x\n",
+				vfp.linearTilingFeatures, vfp.optimalTilingFeatures, vfp.bufferFeatures );
+	vkGetPhysicalDeviceFormatProperties( PhysicalDevice, IN VK_FORMAT_B8G8R8A8_UNORM, &vfp );
+	fprintf( FpDebug, "Format VK_FORMAT_B8G8R8A8_UNORM: 0x%08x 0x%08x  0x%08x\n",
+				vfp.linearTilingFeatures, vfp.optimalTilingFeatures, vfp.bufferFeatures );
+	vkGetPhysicalDeviceFormatProperties( PhysicalDevice, IN VK_FORMAT_B8G8R8A8_SRGB, &vfp );
+	fprintf( FpDebug, "Format VK_FORMAT_B8G8R8A8_SRGB: 0x%08x 0x%08x  0x%08x\n",
+				vfp.linearTilingFeatures, vfp.optimalTilingFeatures, vfp.bufferFeatures );
+
+	VkPhysicalDeviceMemoryProperties			vpdmp;
+	vkGetPhysicalDeviceMemoryProperties( PhysicalDevice, OUT &vpdmp );
+
+	fprintf( FpDebug, "\n%d Memory Types:\n", vpdmp.memoryTypeCount );
+	for( unsigned int i = 0; i < vpdmp.memoryTypeCount; i++ )
+	{
+		VkMemoryType vmt = vpdmp.memoryTypes[i];
+		VkMemoryPropertyFlags vmpf = vmt.propertyFlags;
+		fprintf( FpDebug, "Memory %2d: ", i );
+		if( (vmpf & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT       ) != 0 )	fprintf( FpDebug, " DeviceLocal" );
+		if( (vmpf & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT       ) != 0 )	fprintf( FpDebug, " HostVisible" );
+		if( (vmpf & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT      ) != 0 )	fprintf( FpDebug, " HostCoherent" );
+		if( (vmpf & VK_MEMORY_PROPERTY_HOST_CACHED_BIT        ) != 0 )	fprintf( FpDebug, " HostCached" );
+		if( (vmpf & VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT   ) != 0 )	fprintf( FpDebug, " LazilyAllocated" );
+		fprintf(FpDebug, "\n");
+	}
+
+	fprintf( FpDebug, "\n%d Memory Heaps:\n", vpdmp.memoryHeapCount );
+	for( unsigned int  i = 0; i < vpdmp.memoryHeapCount; i++ )
+	{
+		fprintf(FpDebug, "Heap %d: ", i);
+		VkMemoryHeap vmh = vpdmp.memoryHeaps[i];
+		fprintf( FpDebug, " size = 0x%08lx", (unsigned long int)vmh.size );
+		if( ( vmh.flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT        ) != 0 )	fprintf( FpDebug, " DeviceLocal" );
+		if( ( vmh.flags & VK_MEMORY_HEAP_MULTI_INSTANCE_BIT  ) != 0 )	fprintf( FpDebug, " MultiInstance" );
+		fprintf(FpDebug, "\n");
+	}
+
+	uint32_t count = -1;
+	vkGetPhysicalDeviceQueueFamilyProperties( IN PhysicalDevice, &count, OUT (VkQueueFamilyProperties *)nullptr );
+	fprintf( FpDebug, "\nFound %d Queue Families:\n", count );
+
+	VkQueueFamilyProperties *vqfp = new VkQueueFamilyProperties[ count ];
+	vkGetPhysicalDeviceQueueFamilyProperties( IN PhysicalDevice, &count, OUT vqfp );
+	for( unsigned int i = 0; i < count; i++ )
+	{
+		fprintf( FpDebug, "\t%d: Queue Family Count = %2d  ;   ", i, vqfp[i].queueCount );
+		if( ( vqfp[i].queueFlags & VK_QUEUE_GRAPHICS_BIT ) != 0 )	fprintf( FpDebug, " Graphics" );
+		if( ( vqfp[i].queueFlags & VK_QUEUE_COMPUTE_BIT  ) != 0 )	fprintf( FpDebug, " Compute" );
+		if( ( vqfp[i].queueFlags & VK_QUEUE_TRANSFER_BIT ) != 0 )	fprintf( FpDebug, " Transfer" );
+		fprintf(FpDebug, "\n");
+	}
+
+	delete[ ] vqfp;
+
+	return result;
+}
