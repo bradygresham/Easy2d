@@ -13,6 +13,8 @@ class Instance{
     ~Instance();
 
     
+    std::vector<char *> wanted_and_available_extensions();
+    std::vector<char *> wanted_and_available_extensions(const char * instanceExtensionsWanted[ ]); //pass in your own stuff
 
     //instance initializations
     //*******************
@@ -25,6 +27,9 @@ class Instance{
 
     private:
     VkInstance _instance;
+
+
+    
 
     const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"

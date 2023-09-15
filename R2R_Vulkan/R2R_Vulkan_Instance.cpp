@@ -19,27 +19,54 @@ namespace R2R{
         vkDestroyInstance(_instance, nullptr);
     }
 
+    std::vector<char *> Instance::wanted_and_available_extensions()
+    {
+        std::vector<char *> wanted_and_available;
+
+        const char * instanceExtensionsWanted[ ] =
+		{
+			"VK_KHR_surface",
+			"VK_EXT_debug_report"
+		};
+
+        uint32_t numExtensionsWanted = sizeof(instanceExtensionsWanted) / sizeof(char *);
+
+        uint32_t numExtensionsAvailable;
+		vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numExtensionsAvailable, (VkExtensionProperties *)nullptr );
+		VkExtensionProperties* InstanceExtensions = new VkExtensionProperties[ numExtensionsAvailable ];
+		VkResult result = vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numExtensionsAvailable, InstanceExtensions );
+		if( result != VK_SUCCESS )
+		{
+            std::cout << "Result: " << result << "\n";
+			error("Extensions not init");
+		}
+
+        wanted_and_available.clear( );
+		for( uint32_t wanted = 0; wanted < numExtensionsWanted; wanted++ )
+		{
+			for( uint32_t available = 0; available < numExtensionsAvailable; available++ )
+			{
+				if( strcmp( instanceExtensionsWanted[wanted], InstanceExtensions[available].extensionName ) == 0 )
+				{
+					wanted_and_available.push_back( InstanceExtensions[available].extensionName );
+					break;
+				}
+			}
+		}
+        return wanted_and_available;
+    }
+
+    std::vector<char *> Instance::wanted_and_available_extensions(const char *instanceExtensionsWanted[])
+    {
+        uint32_t numExtensionsWanted = sizeof(instanceExtensionsWanted) / sizeof(char *);
+    }
+
     void Instance::init_instance(SDL_Window* window)
     {
-        uint32_t _sdlExtensionCount = 0;
-        const char ** _sdlExtensions = NULL;
         if (!checkValidationLayerSupport()){
             error("validation layers requested, but not available!\n");
             throw std::runtime_error("");
         }
-        if (!SDL_Vulkan_GetInstanceExtensions(window, &_sdlExtensionCount, NULL)){
-            error("Could not init vulkan\n");
-        }
-        else{
-            _sdlExtensions = (const char**)malloc(sizeof(const char*) * _sdlExtensionCount);
-        }
-
-        if (!SDL_Vulkan_GetInstanceExtensions(window, &_sdlExtensionCount, _sdlExtensions)) {
-        // Handle error
-        free(_sdlExtensions);
-        error("Vulkan not initialized to window");
-        }
-
         //default initialization
         //check that it worked
         
@@ -56,6 +83,9 @@ namespace R2R{
         //create info
         _createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         _createInfo.pApplicationInfo = &_appInfo;
+        std::vector<char *> extensions = wanted_and_available_extensions();
+        _createInfo.enabledExtensionCount = (uint32_t)extensions.size();
+        _createInfo.ppEnabledExtensionNames = extensions.data();
         //
         bool enableValidationLayers = true;
         if (enableValidationLayers) {
@@ -66,25 +96,13 @@ namespace R2R{
             _createInfo.enabledLayerCount = 0;
             }
         //enable all available extensions
-        vkEnumerateInstanceExtensionProperties(NULL, &_sdlExtensionCount,NULL);
-        std::vector<VkExtensionProperties> available_extensions(_sdlExtensionCount);
-        vkEnumerateInstanceExtensionProperties(NULL, &_sdlExtensionCount, available_extensions.data());
         
         
-        //enabling all extensions
-        const char* enable[size(available_extensions)];
         
-        for (int i = 0; i < size(available_extensions); i++){
-            enable[i] = available_extensions[i].extensionName;
-        }
         
-        _createInfo.enabledExtensionCount = size(available_extensions);
-        _createInfo.ppEnabledExtensionNames = enable;
+        
 
-        std::cout << "available extensions:\n";
-        for (const auto& extension : available_extensions) {
-            std::cout << '\t' << extension.extensionName << '\n';
-        }
+        
         
         std::cout << "\nENABLED_EXTENSIONS: \n";
         for (uint32_t i = 0; i < _createInfo.enabledExtensionCount; ++i) {
@@ -92,13 +110,13 @@ namespace R2R{
         }
         
         //create instance
+        
         if (vkCreateInstance(&_createInfo, nullptr, &_instance) != VK_SUCCESS){
             error("Failure to create instance");
             throw std::runtime_error("");
         }
         
         //free memory
-        free(_sdlExtensions);
     }
 
     void Instance::init_instance(VkInstanceCreateInfo create, VkApplicationInfo app)
