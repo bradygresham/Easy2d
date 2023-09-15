@@ -13,9 +13,11 @@ class Instance{
     ~Instance();
 
     
-    std::vector<char *> wanted_and_available_extensions();
-    std::vector<char *> wanted_and_available_extensions(const char * instanceExtensionsWanted[ ]); //pass in your own stuff
+    std::vector<char *> extensions_wanted_and_available();
+    std::vector<char *> extensions_wanted_and_available(const char * instanceExtensionsWanted[ ]); //pass in your own stuff
 
+    std::vector<char*> layers_wanted_and_available();
+    std::vector<char*> layers_wanted_and_available(const char * instanceLayersWanted[ ]);
     //instance initializations
     //*******************
     void init_instance(VkInstanceCreateInfo create, VkApplicationInfo app);
@@ -23,17 +25,10 @@ class Instance{
     //*******************
     VkInstance* getInstancePtr(); //return pointer to the instance
 
-    bool checkValidationLayerSupport();
 
     private:
     VkInstance _instance;
 
-
-    
-
-    const std::vector<const char*> validationLayers = {
-    "VK_LAYER_KHRONOS_validation"
-    };
 };
 
 }

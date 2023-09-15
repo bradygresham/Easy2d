@@ -19,7 +19,7 @@ namespace R2R{
         vkDestroyInstance(_instance, nullptr);
     }
 
-    std::vector<char *> Instance::wanted_and_available_extensions()
+    std::vector<char *> Instance::extensions_wanted_and_available()
     {
         std::vector<char *> wanted_and_available;
 
@@ -56,17 +56,49 @@ namespace R2R{
         return wanted_and_available;
     }
 
-    std::vector<char *> Instance::wanted_and_available_extensions(const char *instanceExtensionsWanted[])
+    std::vector<char *> Instance::extensions_wanted_and_available(const char *instanceExtensionsWanted[])
     {
         uint32_t numExtensionsWanted = sizeof(instanceExtensionsWanted) / sizeof(char *);
     }
 
+    std::vector<char *> Instance::layers_wanted_and_available()
+    {
+        std::vector<char *> wanted_and_available;
+
+        const char * instanceLayersWanted[ ] =
+		{
+			"VK_LAYER_KHRONOS_validation"
+		};
+
+        uint32_t numLayersWanted = sizeof(instanceLayersWanted) / sizeof(char *);
+
+        uint32_t numLayersAvailable;
+		vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numLayersAvailable, (VkExtensionProperties *)nullptr );
+		VkExtensionProperties* InstanceLayers = new VkExtensionProperties[ numLayersAvailable ];
+		VkResult result = vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numLayersAvailable, InstanceLayers );
+		if( result != VK_SUCCESS )
+		{
+            std::cout << "Result: " << result << "\n";
+			error("Extensions not init");
+		}
+
+        wanted_and_available.clear( );
+		for( uint32_t wanted = 0; wanted < numLayersWanted; wanted++ )
+		{
+			for( uint32_t available = 0; available < numLayersAvailable; available++ )
+			{
+				if( strcmp( instanceLayersWanted[wanted], InstanceLayers[available].extensionName ) == 0 )
+				{
+					wanted_and_available.push_back( InstanceLayers[available].extensionName );
+					break;
+				}
+			}
+		}
+        return wanted_and_available;
+    }
+
     void Instance::init_instance(SDL_Window* window)
     {
-        if (!checkValidationLayerSupport()){
-            error("validation layers requested, but not available!\n");
-            throw std::runtime_error("");
-        }
         //default initialization
         //check that it worked
         
@@ -83,24 +115,13 @@ namespace R2R{
         //create info
         _createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         _createInfo.pApplicationInfo = &_appInfo;
-        std::vector<char *> extensions = wanted_and_available_extensions();
+        std::vector<char *> extensions = extensions_wanted_and_available();
         _createInfo.enabledExtensionCount = (uint32_t)extensions.size();
         _createInfo.ppEnabledExtensionNames = extensions.data();
         //
-        bool enableValidationLayers = true;
-        if (enableValidationLayers) {
-            _createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-            _createInfo.ppEnabledLayerNames = validationLayers.data();
-            } 
-        else {
-            _createInfo.enabledLayerCount = 0;
-            }
-        //enable all available extensions
-        
-        
-        
-        
-        
+        std::vector<char *> layers = layers_wanted_and_available();
+        _createInfo.enabledLayerCount = layers.size();
+        _createInfo.ppEnabledLayerNames = layers.data();
 
         
         
@@ -141,24 +162,5 @@ namespace R2R{
         return &_instance;
     }
     
-    bool Instance::checkValidationLayerSupport()
-    {
-        uint32_t layerCount;
-    vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-    std::vector<VkLayerProperties> availableLayers(layerCount);
-    vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-    for (const char* layerName : validationLayers) {
-        bool layerFound = false;
-        for (const auto& layerProperties : availableLayers) {
-        if (strcmp(layerName, layerProperties.layerName) == 0) {
-        layerFound = true;
-        break;
-        }
-    }
-    if (!layerFound) {
-        return false;
-    }
-    }
-    return true;
-    }
+   
 }
