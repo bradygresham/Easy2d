@@ -16,7 +16,9 @@ namespace R2R{
 
     Instance::~Instance()
     {
-        vkDestroyInstance(_instance, nullptr);
+        if (_instance != nullptr) {
+            vkDestroyInstance(_instance, nullptr);
+        }
     }
 
     std::vector<char *> Instance::extensions_wanted_and_available()
@@ -41,7 +43,6 @@ namespace R2R{
 			error("Extensions not init");
 		}
 
-        wanted_and_available.clear( );
 		for( uint32_t wanted = 0; wanted < numExtensionsWanted; wanted++ )
 		{
 			for( uint32_t available = 0; available < numExtensionsAvailable; available++ )
@@ -73,23 +74,22 @@ namespace R2R{
         uint32_t numLayersWanted = sizeof(instanceLayersWanted) / sizeof(char *);
 
         uint32_t numLayersAvailable;
-		vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numLayersAvailable, (VkExtensionProperties *)nullptr );
-		VkExtensionProperties* InstanceLayers = new VkExtensionProperties[ numLayersAvailable ];
-		VkResult result = vkEnumerateInstanceExtensionProperties( (char *)nullptr, &numLayersAvailable, InstanceLayers );
+		vkEnumerateInstanceLayerProperties( &numLayersAvailable, (VkLayerProperties *)nullptr  );
+		VkLayerProperties* InstanceLayers = new VkLayerProperties[ numLayersAvailable ];
+		VkResult result = vkEnumerateInstanceLayerProperties( &numLayersAvailable, InstanceLayers );
 		if( result != VK_SUCCESS )
 		{
             std::cout << "Result: " << result << "\n";
 			error("Extensions not init");
 		}
 
-        wanted_and_available.clear( );
 		for( uint32_t wanted = 0; wanted < numLayersWanted; wanted++ )
 		{
 			for( uint32_t available = 0; available < numLayersAvailable; available++ )
 			{
-				if( strcmp( instanceLayersWanted[wanted], InstanceLayers[available].extensionName ) == 0 )
+				if( strcmp( instanceLayersWanted[wanted], InstanceLayers[available].layerName ) == 0 )
 				{
-					wanted_and_available.push_back( InstanceLayers[available].extensionName );
+					wanted_and_available.push_back( InstanceLayers[available].layerName );
 					break;
 				}
 			}
@@ -137,7 +137,6 @@ namespace R2R{
             throw std::runtime_error("");
         }
         
-        //free memory
     }
 
     void Instance::init_instance(VkInstanceCreateInfo create, VkApplicationInfo app)

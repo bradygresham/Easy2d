@@ -1,5 +1,6 @@
 #pragma once
 #include "R2R_Vulkan_Instance.h"
+#include "R2R_Vulkan_Device.h"
 #include "../Window.h"
 #include <vulkan/vulkan.h>
 
@@ -17,6 +18,8 @@ namespace R2R{
         
         private:
         R2R::Instance _instance; //custom class
+        R2R::PhysicalDevice _physicalDevice;
+        
         //add validation layers
         //add physical and logical devices
         //queues
