@@ -17,9 +17,24 @@ namespace R2R{
 
         
         private:
-        R2R::Instance _instance; //custom class
-        R2R::PhysicalDevice _physicalDevice;
-        
+
+        struct init_info{
+            //window xywh
+            //title
+            //renderer
+            //etc.
+        };
+
+        struct Vulkan_Application{
+            //maybe make these arrays??
+            R2R::Instance instance;
+            R2R::PhysicalDevice physicalDevice;
+            R2R::LogicalDevice logicalDevice;
+
+            Window _window;
+        };
+
+        Vulkan_Application _app;
         //add validation layers
         //add physical and logical devices
         //queues
@@ -27,6 +42,6 @@ namespace R2R{
         //application
         //command pool
         //descriptor pool
-        Window _window;
+        
     };
 }

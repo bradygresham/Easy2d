@@ -9,6 +9,7 @@ namespace R2R{
 class Instance{
     public:
     Instance();
+    Instance(SDL_Window *window);
     Instance (const Instance & inst);
     ~Instance();
 
@@ -23,7 +24,8 @@ class Instance{
     void init_instance(VkInstanceCreateInfo create, VkApplicationInfo app);
     void init_instance(SDL_Window* window);
     //*******************
-    VkInstance* getInstancePtr(); //return pointer to the instance
+    VkInstance getInstance(); //return pointer to the instance
+    
 
 
     private:

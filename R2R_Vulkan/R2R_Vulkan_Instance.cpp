@@ -6,7 +6,13 @@
 namespace R2R{
     Instance::Instance()
     {
-        _instance = nullptr;
+        _instance = NULL;
+    }
+
+    Instance::Instance(SDL_Window *window)
+    {
+        _instance = NULL;
+        init_instance(window);
     }
 
     Instance::Instance(const Instance &inst)
@@ -156,9 +162,9 @@ namespace R2R{
         }
     }
 
-    VkInstance *Instance::getInstancePtr()
+    VkInstance Instance::getInstance()
     {
-        return &_instance;
+        return _instance;
     }
     
    
