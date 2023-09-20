@@ -145,18 +145,11 @@ namespace R2R{
         
     }
 
-    void Instance::init_instance(VkInstanceCreateInfo create, VkApplicationInfo app)
+    void Instance::init_instance(VkInstanceCreateInfo &create, VkApplicationInfo &app)
     {
-        VkInstanceCreateInfo _createInfo = {};
-        VkApplicationInfo _appInfo = {};
-        //pass in your own vk info
-        _createInfo = create;
-        _appInfo = app;
-
-        _createInfo.pApplicationInfo = &_appInfo;
+        create.pApplicationInfo = &app;
         //create instance
-        
-        if (vkCreateInstance(&_createInfo, nullptr, &_instance) != VK_SUCCESS){
+        if (vkCreateInstance(&create, nullptr, &_instance) != VK_SUCCESS){
             error("Failure to create instance");
             throw std::runtime_error("");
         }

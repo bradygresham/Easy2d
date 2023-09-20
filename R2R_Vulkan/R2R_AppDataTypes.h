@@ -1,4 +1,10 @@
+#pragma once
+
 #include "../Window.h"
+#include "../Renderer.h"
+#include "../Camera2D.h"
+#include "../InputManager.h"
+
 #include "R2R_Vulkan_Instance.h"
 #include "R2R_Vulkan_Device.h"
 #include <vulkan/vulkan.h>
@@ -18,16 +24,17 @@ struct InitInfo{
     WindowInfo winfo;
     VkInstanceCreateInfo create;
     VkApplicationInfo app;
-    ExtensionsAndLayers eal;
 };
 
 struct Vulkan_Application{
     //maybe make these arrays??
+    Window window;
+    Renderer renderer;
     R2R::Instance instance;
     R2R::PhysicalDevice physicalDevice;
     R2R::LogicalDevice logicalDevice;
-
-    Window _window;
+    Camera2D camera2d;
+    InputManager inputmanager;
 
 };
 //add validation layers

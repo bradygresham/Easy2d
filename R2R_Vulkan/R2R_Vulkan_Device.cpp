@@ -7,7 +7,7 @@ namespace R2R
     PhysicalDevice::PhysicalDevice(){
         _physicalDevice = NULL;
     }
-    PhysicalDevice::PhysicalDevice(VkInstance &instance)
+    PhysicalDevice::PhysicalDevice(const VkInstance &instance)
     {
         _physicalDevice = NULL;
         VkInstance tmpInst = instance;
@@ -17,7 +17,7 @@ namespace R2R
     {
     }
 
-    void PhysicalDevice::init_device(VkInstance &instance){
+    void PhysicalDevice::init_device(const VkInstance &instance){
         VkResult result = VK_SUCCESS;
         uint32_t deviceCount = 0;
 

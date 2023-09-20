@@ -8,10 +8,10 @@ namespace R2R{
 class PhysicalDevice{
     public:
     PhysicalDevice();
-    PhysicalDevice(VkInstance &instance);
+    PhysicalDevice(const VkInstance &instance);
     ~PhysicalDevice();
 
-    void init_device(VkInstance &instance);
+    void init_device(const VkInstance &instance);
     VkPhysicalDevice * getPtr();
 
     private:
