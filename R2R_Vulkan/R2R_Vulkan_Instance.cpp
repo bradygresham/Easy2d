@@ -1,8 +1,13 @@
 #include "R2R_Vulkan_Instance.h"
 #include "../Error.h"
+
+#include "R2R_Extension_Utils.h"
+#include "R2R_Layer_Utils.h"
+
 #include <stdexcept>
 #include <vector>
 #include <iostream>
+
 namespace R2R{
     Instance::Instance()
     {
@@ -63,15 +68,11 @@ namespace R2R{
         return wanted_and_available;
     }
 
-    std::vector<char *> Instance::extensions_wanted_and_available(const char *instanceExtensionsWanted[])
-    {
-        uint32_t numExtensionsWanted = sizeof(instanceExtensionsWanted) / sizeof(char *);
-    }
+    
 
     std::vector<char *> Instance::layers_wanted_and_available()
     {
         std::vector<char *> wanted_and_available;
-
         const char * instanceLayersWanted[ ] =
 		{
 			"VK_LAYER_KHRONOS_validation"
@@ -88,7 +89,6 @@ namespace R2R{
             std::cout << "Result: " << result << "\n";
 			error("Extensions not init");
 		}
-
 		for( uint32_t wanted = 0; wanted < numLayersWanted; wanted++ )
 		{
 			for( uint32_t available = 0; available < numLayersAvailable; available++ )
@@ -98,6 +98,9 @@ namespace R2R{
 					wanted_and_available.push_back( InstanceLayers[available].layerName );
 					break;
 				}
+                else{
+                    
+                }
 			}
 		}
         return wanted_and_available;

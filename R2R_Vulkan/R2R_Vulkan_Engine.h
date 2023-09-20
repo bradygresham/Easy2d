@@ -3,7 +3,7 @@
 #include "R2R_Vulkan_Device.h"
 #include "R2R_AppDataTypes.h"
 #include <vulkan/vulkan.h>
-
+#include "R2R_Layer_Utils.h"
 namespace R2R{
     class R2R_Vulkan{
         public:

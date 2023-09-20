@@ -15,10 +15,9 @@ class Instance{
 
     
     static std::vector<char *> extensions_wanted_and_available();
-    std::vector<char *> extensions_wanted_and_available(const char * instanceExtensionsWanted[ ]); //pass in your own stuff
 
     static std::vector<char*> layers_wanted_and_available();
-    std::vector<char*> layers_wanted_and_available(const char * instanceLayersWanted[ ]);
+    bool check_layer_availability(const char * instanceLayersWanted[ ]);
     //instance initializations
     //*******************
     void init_instance(VkInstanceCreateInfo &create, VkApplicationInfo &app);
