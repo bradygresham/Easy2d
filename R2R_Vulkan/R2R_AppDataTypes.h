@@ -35,7 +35,6 @@ struct Vulkan_Application{
     R2R::LogicalDevice logicalDevice;
     Camera2D camera2d;
     InputManager inputmanager;
-
 };
 //add validation layers
         //add physical and logical devices

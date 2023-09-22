@@ -15,6 +15,7 @@ namespace R2R
     }
     PhysicalDevice::~PhysicalDevice()
     {
+        
     }
 
     void PhysicalDevice::init_device(const VkInstance &instance){

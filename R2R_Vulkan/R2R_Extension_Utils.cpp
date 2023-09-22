@@ -28,6 +28,7 @@ bool instance_check_extension_availability(const char *instanceExtensionsWanted[
 				}
 			}
             if(!is_available){
+				delete [] InstanceExtensions;
                 error("Requested extensions not available");
                 return false;
             }
