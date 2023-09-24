@@ -12,7 +12,7 @@ class PhysicalDevice{
     ~PhysicalDevice();
 
     void init_device(const VkInstance &instance);
-    VkPhysicalDevice * getPtr();
+    VkPhysicalDevice  getDevice();
 
     private:
     VkPhysicalDevice _physicalDevice;
@@ -23,7 +23,7 @@ class LogicalDevice{
     LogicalDevice();
     ~LogicalDevice();
 
-    void init_device();
+    void init_device(const VkPhysicalDevice &physicalDevice);
     private:
     VkDevice _logicalDevice;
 };

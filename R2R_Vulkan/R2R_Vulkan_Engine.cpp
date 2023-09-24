@@ -57,6 +57,7 @@ void R2R::R2R_Vulkan_Engine::init_systems()
 	{
 		"VK_LAYER_KHRONOS_validation"
 	};
+
     
 	if(!instance_check_extension_availability(instanceExtensionsWanted)){
 		error("Requested extensions not available");
@@ -80,7 +81,7 @@ void R2R::R2R_Vulkan_Engine::init_systems()
     _app.window.init_window(_init.winfo);
     _app.instance.init_instance(_init.create,_init.app);
     _app.physicalDevice.init_device(_app.instance.getInstance());
-    //put logical device here
+	_app.logicalDevice.init_device(_app.physicalDevice.getDevice());
     _app.camera2d.init_camera(_app.window.get_width(),_app.window.get_height());
     //putinput manager here
 
