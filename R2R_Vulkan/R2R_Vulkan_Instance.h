@@ -20,7 +20,7 @@ class Instance{
     bool check_layer_availability(const char * instanceLayersWanted[ ]);
     //instance initializations
     //*******************
-    void init_instance(VkInstanceCreateInfo &create, VkApplicationInfo &app);
+    void init_instance(const VkInstanceCreateInfo &create, const VkApplicationInfo &app);
     void init_instance(SDL_Window* window);
     //*******************
     VkInstance getInstance(); //return pointer to the instance

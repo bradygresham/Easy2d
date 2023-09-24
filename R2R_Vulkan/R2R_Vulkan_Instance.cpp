@@ -148,7 +148,7 @@ namespace R2R{
         
     }
 
-    void Instance::init_instance(VkInstanceCreateInfo &create, VkApplicationInfo &app)
+    void Instance::init_instance(const VkInstanceCreateInfo &create, const VkApplicationInfo &app)
     {
         //create instance
         VkResult result = vkCreateInstance(&create, nullptr, &_instance);

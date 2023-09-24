@@ -5,7 +5,6 @@
 R2R::R2R_Vulkan_Engine::R2R_Vulkan_Engine():
 _app{
     Window{},
-    Renderer{},
     R2R::Instance{},
     R2R::PhysicalDevice{},
     R2R::LogicalDevice{},
@@ -36,7 +35,7 @@ void R2R::R2R_Vulkan_Engine::init_systems()
 	_init.winfo.y = SDL_WINDOWPOS_CENTERED;
 	_init.winfo.w = 1024;
 	_init.winfo.h = 768;
-	_init.winfo.window_flags = SDL_WINDOW_VULKAN | SDL_WINDOW_SHOWN;
+	_init.winfo.window_flags = (SDL_WindowFlags)SDL_WINDOW_VULKAN;
 
 	//init application info
 	_init.app.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -79,7 +78,6 @@ void R2R::R2R_Vulkan_Engine::init_systems()
     _init.create.ppEnabledExtensionNames = instanceExtensionsWanted;
     
     _app.window.init_window(_init.winfo);
-    _app.renderer.init_renderer(_app.window.getWindow(),0);
     _app.instance.init_instance(_init.create,_init.app);
     _app.physicalDevice.init_device(_app.instance.getInstance());
     //put logical device here

@@ -29,7 +29,6 @@ struct InitInfo{
 struct Vulkan_Application{
     //maybe make these arrays??
     Window window;
-    Renderer renderer;
     R2R::Instance instance;
     R2R::PhysicalDevice physicalDevice;
     R2R::LogicalDevice logicalDevice;

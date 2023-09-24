@@ -6,7 +6,7 @@ class Renderer{
     ~Renderer();
 
     void init_renderer();
-    void init_renderer(SDL_Window* targetWindow, Uint32 rendererFlags);
+    void init_renderer( SDL_Window* targetWindow, Uint32 rendererFlags);
 
     SDL_Renderer* getRenderer();
     void setTarget(SDL_Texture* target);

@@ -19,9 +19,10 @@ void Renderer::init_renderer()
     if (_renderer == nullptr){error("Renderer not created");}
 }
 
-void Renderer::init_renderer(SDL_Window *targetWindow, Uint32 rendererFlags)
+void Renderer::init_renderer( SDL_Window *targetWindow, Uint32 rendererFlags)
 {
-    _renderer = SDL_CreateRenderer(targetWindow, -1, rendererFlags);
+    
+    _renderer = SDL_CreateRenderer( targetWindow, -1, rendererFlags);
     if (_renderer == nullptr){error("Renderer not created");}
 }
 

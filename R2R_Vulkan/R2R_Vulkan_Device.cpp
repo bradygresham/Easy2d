@@ -60,6 +60,8 @@ namespace R2R
         {
             error("Could not select a physical device");
         }
+
+        delete[] physicalDevices;
     }
 
     VkPhysicalDevice* PhysicalDevice::getPtr(){

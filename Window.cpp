@@ -22,7 +22,7 @@ void Window::init_window_info(const char *title, int x, int y, int w, int h, Uin
     _info.window_flags = window_flags;
 }
 
-void Window::init_window_info(WindowInfo info)
+void Window::init_window_info(const WindowInfo info)
 {
     _info.title = info.title;
     _info.x = info.x;
@@ -44,7 +44,7 @@ void Window::init_window()
     if (_window == nullptr){error("Window not created");}
 }
 
-void Window::init_window(WindowInfo info)
+void Window::init_window(const WindowInfo info)
 {
     if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
     {
@@ -52,9 +52,11 @@ void Window::init_window(WindowInfo info)
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0){error("Fatal Error: Cannot initialize SDL Video");}
 
     }
-    _window = SDL_CreateWindow(info.title, info.x, info.y, info.w, info.h, info.window_flags);
-    _windowWidth = info.w; 
-    _windowHeight = info.h;
+    _info = info;
+    _window = SDL_CreateWindow(_info.title, _info.x, _info.y, _info.w, _info.h, _info.window_flags);
+    _windowWidth = _info.w; 
+    _windowHeight = _info.h;
+    
     if (_window == nullptr){error("Window not created");}
 }
 

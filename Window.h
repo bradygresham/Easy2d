@@ -23,9 +23,9 @@ class Window{
     int h,
     Uint32 window_flags
     );
-    void init_window_info(WindowInfo info);
+    void init_window_info(const WindowInfo info);
     void init_window();
-    void init_window(WindowInfo info);
+    void init_window(const WindowInfo info);
 
     WindowInfo getInfo();
     SDL_Window* getWindow();
