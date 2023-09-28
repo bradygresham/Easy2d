@@ -1,6 +1,6 @@
 #include "Texture.h"
-#include "ResourceManager.h"
-#include "Error.h"
+#include "../R2R_Resource_Management/ResourceManager.h"
+#include "../R2R_Utils/Error.h"
 #include <iostream>
 Texture::Texture()
 {

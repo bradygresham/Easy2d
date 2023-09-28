@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Window.h"
-#include "../Renderer.h"
-#include "../Camera2D.h"
-#include "../InputManager.h"
+#include "../R2R_SDL/Window.h"
+#include "../R2R_SDL/Renderer.h"
+#include "../R2R_SDL/Camera2D.h"
+#include "../R2R_Resource_Management/InputManager.h"
 
 #include "R2R_Vulkan_Instance.h"
 #include "R2R_Vulkan_Device.h"
